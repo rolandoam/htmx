@@ -3463,6 +3463,10 @@ return (function () {
             // this can be ovverriden by responding to the htmx:beforeSwap event and
             // overriding the detail.shouldSwap property
             var shouldSwap = xhr.status >= 200 && xhr.status < 400 && xhr.status !== 204;
+            if (hasHeader(xhr,/HX-Force-Swap:/i)) {
+                shouldSwap = true;
+            }
+
             var serverResponse = xhr.response;
             var isError = xhr.status >= 400;
             var ignoreTitle = htmx.config.ignoreTitle
@@ -3655,7 +3659,6 @@ return (function () {
                         });
                     }
                 }
-
 
                 if (swapSpec.swapDelay > 0) {
                     setTimeout(doSwap, swapSpec.swapDelay)
